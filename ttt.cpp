@@ -4,7 +4,7 @@
 
 int main() {
   std::vector<char> board;
-  board = seed_board();
+  seed_board(board);
   int count=0;
   bool is_end_game=false;
   char player;
@@ -18,13 +18,14 @@ int main() {
     };
     bool valid_move = false;
     while(!valid_move) {
-      move = get_move(player);
+      get_move(player, move);
       valid_move = check_move(move, board);
     };
-    board = update_board(player, move, board);
+    update_board(player, move, board);
     char result = game_status(board, player);
     if (result == 'w' || result == '-') {
       is_end_game = true;
+      display_board(board);
       announce_result(player, result);
     }
     count++;

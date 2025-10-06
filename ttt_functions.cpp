@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
-  
-void display_board(std::vector<char> board) {
+
+void display_board(const std::vector<char>& board) {
+  std::cout << "\n";
   for(int i=0; i<board.size(); i++) {
     if((i+1)%3 != 1) {
       std::cout << "|";
@@ -19,34 +20,32 @@ void display_board(std::vector<char> board) {
       std::cout << "\n";
     };
   }
+  for(int i=0; i<2; i++) {
+    std::cout << "\n";
+  }
 }
-std::vector<char> seed_board() {
-  std::vector<char> board;
+void seed_board(std::vector<char>& board) {
   board.assign(9, ' ');
-  return(board);
 }
-int get_move(char player) {
+void get_move(const char& player, int& move) {
   std::cout << "Player " << player << " please make a move: ";
-  int move;
   std::cin >> move;
-  return(move);
 }
-bool check_move(int move, std::vector<char> board) {
+bool check_move(const int& move, const std::vector<char>& board) {
   if(board[move-1] != ' ' || move < 1 || move > 9) {
     return(false);
   };
   return true;
 }
-std::vector<char> update_board(char player, int move, std::vector<char> board) {
+void update_board(const char& player, const int& move, std::vector<char>& board) {
   board[move-1] = player;
-  return(board);
 }
-std::vector<std::vector<int>> win_patterns = {
+const   std::vector<std::vector<int>> win_patterns = {
   {0,1,2}, {3,4,5}, {6,7,8},
   {0,3,6}, {1,4,7}, {2,5,8},
   {0,4,8}, {2,4,6}
 };
-bool is_won(std::vector<int> moves) {
+bool is_won(const std::vector<int>& moves) {
   for(int i=0; i<win_patterns.size(); i++) {
     int match_count=0;
     for(int j=0; j<win_patterns[i].size(); j++) {
@@ -63,18 +62,18 @@ bool is_won(std::vector<int> moves) {
       };
     }
   }
-  return(false);
+  return(false); 
 }
-std::vector<int> extract_moves(std::vector<char> board, char player) {
+std::vector<int> extract_moves(const std::vector<char>& board, const char& player) {
   std::vector<int> moves;
   for(int i=0; i<board.size(); i++) {
     if(board[i] == player) {
-      moves.push_back(i);
+      moves.push_back(i);  
     };
   };
   return(moves);
 }
-bool is_tie(std::vector<char> board) {
+bool is_tie(const std::vector<char>& board) {
   for(int i=0; i<board.size(); i++) {
     if(board[i] != 'X' && board[i] != 'O') {
       return(false);
@@ -82,7 +81,7 @@ bool is_tie(std::vector<char> board) {
   };
   return(true);
 }
-char game_status(std::vector<char> board, char player) {
+char game_status(const std::vector<char>& board, const char& player) {
   std::vector<int> moves = extract_moves(board, player);
   if(is_won(moves)) {
     return('w');
@@ -92,7 +91,7 @@ char game_status(std::vector<char> board, char player) {
     return(' ');
   };
 }
-void announce_result(char player, char result) {
+void announce_result(const char& player, const char& result) {
   if (result == 'w') {
     std::cout << "Player " << player << " win!\n";
   } else if (result == '-') {
